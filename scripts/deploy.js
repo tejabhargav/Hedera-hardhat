@@ -3,12 +3,12 @@ const hre = require("hardhat");
 async function main() {
 
   // Deploy the contract
-  const Clay = await hre.ethers.getContractFactory("CLAYInTheBlockchainLand");
-  const clay = await Clay.deploy();
+  const Faucet = await hre.ethers.getContractFactory("Faucet");
+  const faucet = await Faucet.deploy();
 
-  const contractAddress = (await clay.deployTransaction.wait()).contractAddress;
+  const contractAddress = (await faucet.deployTransaction.wait()).contractAddress;
 
-  console.log("Clay contract deployed to:", contractAddress);
+  console.log("faucet contract deployed to:", contractAddress);
 
 }
 
