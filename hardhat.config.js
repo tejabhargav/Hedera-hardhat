@@ -1,55 +1,33 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("@nomicfoundation/hardhat-chai-matchers");
-require("@nomiclabs/hardhat-ethers");
-//import dotenv library to access environment variables stored in .env file
+
 require("dotenv").config();
 
-//define hardhat task here, which can be accessed in our test file (test/rpc.js) by using hre.run('taskName')
-task("show-balance", async () => {
-  const showBalance = require("./scripts/showBalance");
-  return showBalance();
-});
+const PRIVATE_KEY = process.env.HEX_PRIVATE_KEY;
 
-task("deploy-contract", async () => {
-  const deployContract = require("./scripts/deployContract");
-  return deployContract();
-});
-
-task("contract-view-call", async (taskArgs) => {
-  const contractViewCall = require("./scripts/contractViewCall");
-  return contractViewCall(taskArgs.contractAddress);
-});
-
-task("contract-call", async (taskArgs) => {
-  const contractCall = require("./scripts/contractCall");
-  return contractCall(taskArgs.contractAddress, taskArgs.msg);
-});
-
-/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  mocha: {
-    timeout: 3600000,
+  defaultNetwork: "hardhat",
+  networks: {
+    hashio: {
+      url: process.env.TESTNET_ENDPOINT,
+      accounts: [PRIVATE_KEY]
+    },
   },
   solidity: {
     version: "0.8.9",
     settings: {
       optimizer: {
         enabled: true,
-        runs: 500,
+        runs: 200,
       },
     },
   },
-  //this specifies which network should be used when running Hardhat tasks
-  defaultNetwork: "testnet",
-  networks: {
-    testnet: {
-      //HashIO testnet endpoint from the TESTNET_ENDPOINT variable in the project .env the file
-      url: process.env.TESTNET_ENDPOINT,
-      //the Hedera testnet account ECDSA private
-      //the public address for the account is derived from the private key
-      accounts: [
-        process.env.TESTNET_OPERATOR_PRIVATE_KEY,
-      ],
-    },
+  paths: {
+    sources  : "./contracts",
+    tests    : "./test",
+    cache    : "./cache",
+    artifacts: "./artifacts"
   },
+  mocha: {
+    timeout: 20000
+  }
 };
