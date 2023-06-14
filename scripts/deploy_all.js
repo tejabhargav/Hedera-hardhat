@@ -35,6 +35,19 @@ async function main() {
 
   console.log("WOOL deployed to:", wool.address);
 
+  const TradeOffer = await hre.ethers.getContractFactory("tradeOffer");
+  const tradeOffer = await TradeOffer.deploy(
+    clay.address,
+    fish.address,
+    rock.address,
+    wood.address,
+    wool.address
+  );
+
+  await tradeOffer.deployed();
+
+  console.log("TradeOffer deployed to:", tradeOffer.address);
+
 }
 
 main()
